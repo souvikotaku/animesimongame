@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import girl1 from "./img/girl1.png";
 import girl2 from "./img/girl2.png";
@@ -15,6 +15,7 @@ import correctSound from "./sounds/win.mp3";
 import gameOverSound from "./sounds/fail.mp3";
 import araSound from "./sounds/ara.mp3";
 import backgroundVideo from "./img/back1.mp4";
+import backgroundMusic from "./sounds/heartbreak.mp3";
 
 const tilesData = [
   { id: 0, img: girl1, sound: sound1 },
@@ -32,6 +33,10 @@ function App() {
   const [shakingTile, setShakingTile] = useState(null);
   const [isHighlighting, setIsHighlighting] = useState(false);
   const [showGirl, setShowGirl] = useState(false); // Control visibility of the girl
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
+
+  const backgroundAudio = new Audio(backgroundMusic);
+  backgroundAudio.loop = true;
 
   const playSound = (sound) => {
     const audio = new Audio(sound);
@@ -112,6 +117,12 @@ function App() {
   };
 
   const startGame = () => {
+    if (!isMusicPlaying) {
+      backgroundAudio
+        .play()
+        .catch((err) => console.error("Audio play failed", err));
+      setIsMusicPlaying(true);
+    }
     resetGame();
     setShowGirl(false); // Hide the girl when the game starts
     setLevel(1);
@@ -121,40 +132,71 @@ function App() {
     }, 1000);
   };
 
+  useEffect(() => {
+    const backgroundAudio = new Audio(backgroundMusic);
+    backgroundAudio.loop = true;
+    backgroundAudio.volume = 0.1; // Set volume to 30%
+    // Attach event listener for user interaction
+    const enableAudio = () => {
+      if (!isMusicPlaying) {
+        backgroundAudio
+          .play()
+          .catch((err) => console.error("Audio play failed", err));
+        setIsMusicPlaying(true);
+      }
+      // Remove listener after first interaction
+      window.removeEventListener("click", enableAudio);
+    };
+
+    window.addEventListener("click", enableAudio);
+
+    return () => {
+      window.removeEventListener("click", enableAudio);
+    };
+  }, [isMusicPlaying]);
+
   return (
     <div className="App">
-      <h1 style={{ textAlign: "center" }}>Anime Simon Game</h1>
-      <div className="game-container">
-        {tilesData.map((tile) => (
-          <div
-            key={tile.id}
-            id={`tile-${tile.id}`}
-            className={`tile ${shakingTile === tile.id ? "shake" : ""} ${
-              isHighlighting ? "disabled" : ""
-            }`}
-            style={{ backgroundImage: `url(${tile.img})` }}
-            onClick={() => handleTileClick(tile.id)}
-          ></div>
-        ))}
+      <video autoPlay loop muted className="background-video">
+        <source src={backgroundVideo} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+      <div class="mainbox">
+        <h1 style={{ textAlign: "center" }}>Anime Simon Game</h1>
+
+        <div className="game-container">
+          {tilesData.map((tile) => (
+            <div
+              key={tile.id}
+              id={`tile-${tile.id}`}
+              className={`tile ${shakingTile === tile.id ? "shake" : ""} ${
+                isHighlighting ? "disabled" : ""
+              }`}
+              style={{ backgroundImage: `url(${tile.img})` }}
+              onClick={() => handleTileClick(tile.id)}
+            ></div>
+          ))}
+        </div>
+        <div style={{ textAlign: "center" }}>
+          <h2>{status}</h2>
+          {status === "Game Over! Press Start to Try Again." && (
+            <button
+              onClick={startGame}
+              className={
+                status === "Game Over! Press Start to Try Again."
+                  ? "blinking"
+                  : ""
+              }
+            >
+              Restart the game
+            </button>
+          )}
+          {status === "Press Start to Play" && (
+            <button onClick={startGame}>Start</button>
+          )}
+        </div>
       </div>
-      <div style={{ textAlign: "center" }}>
-        <h2>{status}</h2>
-        {status === "Game Over! Press Start to Try Again." && (
-          <button
-            onClick={startGame}
-            className={
-              status === "Game Over! Press Start to Try Again."
-                ? "blinking"
-                : ""
-            }
-          >
-            Restart the game
-          </button>
-        )}
-        {status === "Press Start to Play" && (
-          <button onClick={startGame}>Start</button>
-        )}
-      </div>
+
       {/* Girl on Game Over */}
       <div className={`girl-container ${showGirl ? "show" : ""}`}>
         <img src={animegirl1} class="bottomgirlpng" alt="Game Over Girl" />
