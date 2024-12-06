@@ -4,12 +4,17 @@ import girl1 from "./img/girl1.png";
 import girl2 from "./img/girl2.png";
 import girl3 from "./img/girl3.png";
 import girl4 from "./img/girl4.png";
+import animegirl1 from "./img/animegirl1.png";
 
 import sound1 from "./sounds/sound1.mp3";
 import sound2 from "./sounds/sound2.mp3";
 import sound3 from "./sounds/sound3.mp3";
 import sound4 from "./sounds/sound4.wav";
-import dingSound from "./sounds/ding.wav"; // Ding sound for highlighting
+import dingSound from "./sounds/ding.wav";
+import correctSound from "./sounds/win.mp3";
+import gameOverSound from "./sounds/fail.mp3";
+import araSound from "./sounds/ara.mp3";
+import backgroundVideo from "./img/back1.mp4";
 
 const tilesData = [
   { id: 0, img: girl1, sound: sound1 },
@@ -25,7 +30,8 @@ function App() {
   const [level, setLevel] = useState(0);
   const [status, setStatus] = useState("Press Start to Play");
   const [shakingTile, setShakingTile] = useState(null);
-  const [isHighlighting, setIsHighlighting] = useState(false); // Track highlighting state
+  const [isHighlighting, setIsHighlighting] = useState(false);
+  const [showGirl, setShowGirl] = useState(false); // Control visibility of the girl
 
   const playSound = (sound) => {
     const audio = new Audio(sound);
@@ -33,14 +39,14 @@ function App() {
   };
 
   const handleTileClick = (id) => {
-    if (isHighlighting) return; // Prevent clicking during sequence highlighting
+    if (isHighlighting) return;
 
     const clickedTile = tilesData.find((tile) => tile.id === id);
     if (clickedTile) {
-      playSound(clickedTile.sound); // Play the associated sound
+      playSound(clickedTile.sound);
     }
-    setShakingTile(id); // Start shake animation
-    setTimeout(() => setShakingTile(null), 500); // Remove shake after animation
+    setShakingTile(id);
+    setTimeout(() => setShakingTile(null), 500);
 
     if (!isPlayerTurn) return;
 
@@ -49,12 +55,15 @@ function App() {
 
     if (sequence[newPlayerSequence.length - 1] !== id) {
       setStatus("Game Over! Press Start to Try Again.");
+      playSound(gameOverSound);
+      playSound(araSound);
       resetGame();
       return;
     }
 
     if (newPlayerSequence.length === sequence.length) {
       setStatus("Correct! Get Ready for the Next Level.");
+      playSound(correctSound);
       setTimeout(() => {
         setLevel((prev) => prev + 1);
         setPlayerSequence([]);
@@ -70,18 +79,18 @@ function App() {
 
     const updatedSequence = sequence.concat(randomTile);
     let delay = 500;
-    setIsHighlighting(true); // Start highlighting sequence
+    setIsHighlighting(true);
 
     updatedSequence.forEach((tile, index) => {
       setTimeout(() => {
         highlightTile(tile);
-        playSound(dingSound); // Play the "ding" sound during highlight
+        playSound(dingSound);
       }, delay * index);
     });
 
     setTimeout(() => {
       setIsPlayerTurn(true);
-      setIsHighlighting(false); // End highlighting after sequence
+      setIsHighlighting(false);
       setStatus(`Level ${level + 1}: Your Turn`);
     }, delay * updatedSequence.length);
   };
@@ -99,10 +108,13 @@ function App() {
     setPlayerSequence([]);
     setLevel(0);
     setIsPlayerTurn(false);
+    setShowGirl(true); // Show the girl on Game Over
   };
 
   const startGame = () => {
     resetGame();
+    setShowGirl(false); // Hide the girl when the game starts
+    setLevel(1);
     setStatus("Get Ready!");
     setTimeout(() => {
       nextStep();
@@ -127,9 +139,25 @@ function App() {
       </div>
       <div style={{ textAlign: "center" }}>
         <h2>{status}</h2>
-        <button onClick={startGame}>
-          {status === "Press Start to Play" ? "Start" : "Restart the game"}
-        </button>
+        {status === "Game Over! Press Start to Try Again." && (
+          <button
+            onClick={startGame}
+            className={
+              status === "Game Over! Press Start to Try Again."
+                ? "blinking"
+                : ""
+            }
+          >
+            Restart the game
+          </button>
+        )}
+        {status === "Press Start to Play" && (
+          <button onClick={startGame}>Start</button>
+        )}
+      </div>
+      {/* Girl on Game Over */}
+      <div className={`girl-container ${showGirl ? "show" : ""}`}>
+        <img src={animegirl1} class="bottomgirlpng" alt="Game Over Girl" />
       </div>
     </div>
   );

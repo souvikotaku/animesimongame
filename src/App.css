@@ -40,6 +40,79 @@
   margin-top: 50px;
 }
 
+@keyframes blink {
+  0% {
+    opacity: 1;
+    background-color: #ff0000; /* Red color for more prominence */
+  }
+  50% {
+    opacity: 0.5;
+    background-color: #ff4d4d; /* Lighter red at halfway */
+  }
+  100% {
+    opacity: 1;
+    background-color: #ff0000; /* Red color again */
+  }
+}
+
+.blinking {
+  animation: blink 0.8s infinite; /* Faster blink to make it more noticeable */
+  color: white; /* Text color should contrast with the background */
+}
+
+@keyframes moveSlightly {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* .girl-container {
+  position: fixed;
+  bottom: -7%;
+  right: 18%;
+  width: 150px;
+  height: auto;
+  animation: moveSlightly 2s infinite;
+  z-index: 10;
+  display: none; 
+}
+
+.bottomgirlpng {
+  height: 600px;
+}
+
+.girl-container.show {
+  display: block;
+} */
+
+.girl-container {
+  position: fixed;
+  bottom: -7%;
+  right: 18%;
+  width: 150px;
+  height: auto;
+  opacity: 0; /* Start fully transparent */
+  transform: translateY(100px); /* Start below the screen */
+  transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+  z-index: 10;
+}
+
+.girl-container.show {
+  opacity: 1; /* Become fully visible */
+  transform: translateY(0); /* Move to its position smoothly */
+}
+
+.bottomgirlpng {
+  height: 600px;
+  animation: moveSlightly 2s infinite;
+}
+
 .tile {
   width: 150px;
   height: 150px;
@@ -72,17 +145,6 @@ button:hover {
 
 button:active {
   transform: scale(1);
-}
-
-/* Highlighting animation for OK button */
-.blinking {
-  animation: blink 1s step-start 0s infinite;
-}
-
-@keyframes blink {
-  50% {
-    background-color: rgba(255, 255, 255, 0.7);
-  }
 }
 
 /* Awesome styling for Start and OK buttons */
