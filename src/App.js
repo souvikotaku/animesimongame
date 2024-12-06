@@ -36,10 +36,10 @@ function App() {
   const [status, setStatus] = useState("Press Start to Play");
   const [shakingTile, setShakingTile] = useState(null);
   const [isHighlighting, setIsHighlighting] = useState(false);
-  const [showGirl, setShowGirl] = useState(false); // Control visibility of the girl
+  const [showGirl, setShowGirl] = useState(false);
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
-  const [showCorrectGirl, setShowCorrectGirl] = useState(false); // Control visibility of the correct girl
-  const [correctGirlImage, setCorrectGirlImage] = useState(animegirl2); // Random girl to show on success
+  const [showCorrectGirl, setShowCorrectGirl] = useState(false);
+  const [correctGirlImage, setCorrectGirlImage] = useState(animegirl2);
 
   const backgroundAudio = new Audio(backgroundMusic);
   backgroundAudio.loop = true;
@@ -76,15 +76,14 @@ function App() {
       setStatus("Correct! Get Ready for the Next Level.");
       playSound(correctSound);
 
-      // Randomly pick a girl image from the list
-      const randomGirl = [animegirl2, animegirl3, animegirl4, animegirl5]; // Add all correct girls here
+      const randomGirl = [animegirl2, animegirl3, animegirl4, animegirl5];
       setCorrectGirlImage(
         randomGirl[Math.floor(Math.random() * randomGirl.length)]
       );
 
-      setShowCorrectGirl(true); // Show a random girl on success
+      setShowCorrectGirl(true);
       setTimeout(() => {
-        setShowCorrectGirl(false); // Hide after a delay
+        setShowCorrectGirl(false);
         setLevel((prev) => prev + 1);
         setPlayerSequence([]);
         nextStep();
@@ -128,7 +127,7 @@ function App() {
     setPlayerSequence([]);
     setLevel(0);
     setIsPlayerTurn(false);
-    setShowGirl(true); // Show the girl on Game Over
+    setShowGirl(true);
   };
 
   const startGame = () => {
@@ -140,7 +139,7 @@ function App() {
       setIsMusicPlaying(true);
     }
     resetGame();
-    setShowGirl(false); // Hide the girl when the game starts
+    setShowGirl(false);
     setLevel(1);
     setStatus("Get Ready!");
     setTimeout(() => {
@@ -151,8 +150,7 @@ function App() {
   useEffect(() => {
     const backgroundAudio = new Audio(backgroundMusic);
     backgroundAudio.loop = true;
-    backgroundAudio.volume = 0.1; // Set volume to 30%
-    // Attach event listener for user interaction
+    backgroundAudio.volume = 0.1;
     const enableAudio = () => {
       if (!isMusicPlaying) {
         backgroundAudio
@@ -160,7 +158,7 @@ function App() {
           .catch((err) => console.error("Audio play failed", err));
         setIsMusicPlaying(true);
       }
-      // Remove listener after first interaction
+
       window.removeEventListener("click", enableAudio);
     };
 
@@ -226,7 +224,7 @@ function App() {
         className={`correct-girl-container ${showCorrectGirl ? "show" : ""}`}
       >
         <img
-          src={correctGirlImage} // Use the randomly selected girl image here
+          src={correctGirlImage}
           className="correct-girlpng"
           alt="Correct Move Girl"
         />

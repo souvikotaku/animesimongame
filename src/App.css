@@ -81,24 +81,24 @@
 
 .blinking2 {
   animation: blink-animation 1s infinite;
-  color: yellow; /* Bright color for the text */
-  background-color: purple; /* Bright background color */
-  border: none; /* Optional: Remove the border to make it cleaner */
-  transform: scale(1); /* Default size */
+  color: yellow;
+  background-color: purple;
+  border: none;
+  transform: scale(1);
 }
 
 @keyframes blink-animation {
   50% {
-    color: white; /* Change text color */
-    background-color: green; /* Change background color */
-    transform: scale(1.2); /* Make button bigger */
+    color: white;
+    background-color: green;
+    transform: scale(1.2);
   }
 
   0%,
   100% {
-    transform: scale(1); /* Return to original size */
-    color: yellow; /* Keep original text color */
-    background-color: purple; /* Keep original background color */
+    transform: scale(1);
+    color: yellow;
+    background-color: purple;
   }
 }
 
@@ -139,15 +139,15 @@
   right: 18%;
   width: 150px;
   height: auto;
-  opacity: 0; /* Start fully transparent */
-  transform: translateY(100px); /* Start below the screen */
+  opacity: 0;
+  transform: translateY(100px);
   transition: transform 0.5s ease-out, opacity 0.5s ease-out;
   z-index: 10;
 }
 
 .girl-container.show {
-  opacity: 1; /* Become fully visible */
-  transform: translateY(0); /* Move to its position smoothly */
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .bottomgirlpng {
@@ -189,7 +189,6 @@ button:active {
   transform: scale(1);
 }
 
-/* Awesome styling for Start and OK buttons */
 .start-button {
   background-color: #4caf50;
   color: white;
@@ -200,7 +199,6 @@ button:active {
   color: white;
 }
 
-/* Disabled button styling */
 button:disabled {
   background-color: #bdbdbd;
   cursor: not-allowed;
@@ -212,11 +210,11 @@ button:disabled {
   width: 450px;
   padding: 1%;
   border-radius: 20px;
-  background: rgba(255, 255, 255, 0.2); /* Slightly transparent background */
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
-  backdrop-filter: blur(10px); /* Apply blur effect for the frosted look */
-  -webkit-backdrop-filter: blur(10px); /* Safari compatibility */
-  border: 1px solid rgba(255, 255, 255, 0.3); /* Light border to enhance edges */
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 .background-video {
   position: fixed;
@@ -225,28 +223,28 @@ button:disabled {
   width: 100vw;
   height: 100vh;
   object-fit: cover;
-  z-index: -1; /* Ensure it stays behind all content */
+  z-index: -1;
 }
 
 .App {
-  position: relative; /* Ensure content appears above the video */
+  position: relative;
   z-index: 1;
 }
 .correct-girl-container {
   position: fixed;
   bottom: -7%;
-  left: 5%; /* Positioned on the left */
+  left: 5%;
   width: 150px;
   height: auto;
-  opacity: 0; /* Start fully transparent */
-  transform: translateY(100px); /* Start below the screen */
+  opacity: 0;
+  transform: translateY(100px);
   transition: transform 0.5s ease-out, opacity 0.5s ease-out;
   z-index: 10;
 }
 
 .correct-girl-container.show {
-  opacity: 1; /* Become fully visible */
-  transform: translateY(0); /* Move to its position smoothly */
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .correct-girlpng {
