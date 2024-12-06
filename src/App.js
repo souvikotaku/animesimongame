@@ -5,6 +5,7 @@ import girl2 from "./img/girl2.png";
 import girl3 from "./img/girl3.png";
 import girl4 from "./img/girl4.png";
 import animegirl1 from "./img/animegirl1.png";
+import animegirl2 from "./img/animegirl2.png";
 
 import sound1 from "./sounds/sound1.mp3";
 import sound2 from "./sounds/sound2.mp3";
@@ -34,6 +35,7 @@ function App() {
   const [isHighlighting, setIsHighlighting] = useState(false);
   const [showGirl, setShowGirl] = useState(false); // Control visibility of the girl
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
+  const [showCorrectGirl, setShowCorrectGirl] = useState(false); // Control visibility of the correct girl
 
   const backgroundAudio = new Audio(backgroundMusic);
   backgroundAudio.loop = true;
@@ -69,7 +71,9 @@ function App() {
     if (newPlayerSequence.length === sequence.length) {
       setStatus("Correct! Get Ready for the Next Level.");
       playSound(correctSound);
+      setShowCorrectGirl(true); // Show animegirl2 on success
       setTimeout(() => {
+        setShowCorrectGirl(false); // Hide after a delay
         setLevel((prev) => prev + 1);
         setPlayerSequence([]);
         nextStep();
@@ -118,6 +122,7 @@ function App() {
 
   const startGame = () => {
     if (!isMusicPlaying) {
+      backgroundAudio.volume = 0.1;
       backgroundAudio
         .play()
         .catch((err) => console.error("Audio play failed", err));
@@ -200,6 +205,15 @@ function App() {
       {/* Girl on Game Over */}
       <div className={`girl-container ${showGirl ? "show" : ""}`}>
         <img src={animegirl1} class="bottomgirlpng" alt="Game Over Girl" />
+      </div>
+      <div
+        className={`correct-girl-container ${showCorrectGirl ? "show" : ""}`}
+      >
+        <img
+          src={animegirl2}
+          className="correct-girlpng"
+          alt="Correct Move Girl"
+        />
       </div>
     </div>
   );
