@@ -79,6 +79,29 @@
   color: white; /* Text color should contrast with the background */
 }
 
+.blinking2 {
+  animation: blink-animation 1s infinite;
+  color: yellow; /* Bright color for the text */
+  background-color: purple; /* Bright background color */
+  border: none; /* Optional: Remove the border to make it cleaner */
+  transform: scale(1); /* Default size */
+}
+
+@keyframes blink-animation {
+  50% {
+    color: white; /* Change text color */
+    background-color: green; /* Change background color */
+    transform: scale(1.2); /* Make button bigger */
+  }
+
+  0%,
+  100% {
+    transform: scale(1); /* Return to original size */
+    color: yellow; /* Keep original text color */
+    background-color: purple; /* Keep original background color */
+  }
+}
+
 @keyframes moveSlightly {
   0% {
     transform: translateY(0);
@@ -184,6 +207,8 @@ button:disabled {
 }
 .mainbox {
   margin: auto;
+  margin-top: 1%;
+
   width: 450px;
   padding: 1%;
   border-radius: 20px;

@@ -6,6 +6,9 @@ import girl3 from "./img/girl3.png";
 import girl4 from "./img/girl4.png";
 import animegirl1 from "./img/animegirl1.png";
 import animegirl2 from "./img/animegirl2.png";
+import animegirl3 from "./img/animegirl3.png"; // New girl image
+import animegirl4 from "./img/animegirl4.png"; // New girl image
+import animegirl5 from "./img/animegirl5.png"; // New girl image
 
 import sound1 from "./sounds/sound1.mp3";
 import sound2 from "./sounds/sound2.mp3";
@@ -36,6 +39,7 @@ function App() {
   const [showGirl, setShowGirl] = useState(false); // Control visibility of the girl
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const [showCorrectGirl, setShowCorrectGirl] = useState(false); // Control visibility of the correct girl
+  const [correctGirlImage, setCorrectGirlImage] = useState(animegirl2); // Random girl to show on success
 
   const backgroundAudio = new Audio(backgroundMusic);
   backgroundAudio.loop = true;
@@ -71,7 +75,14 @@ function App() {
     if (newPlayerSequence.length === sequence.length) {
       setStatus("Correct! Get Ready for the Next Level.");
       playSound(correctSound);
-      setShowCorrectGirl(true); // Show animegirl2 on success
+
+      // Randomly pick a girl image from the list
+      const randomGirl = [animegirl2, animegirl3, animegirl4, animegirl5]; // Add all correct girls here
+      setCorrectGirlImage(
+        randomGirl[Math.floor(Math.random() * randomGirl.length)]
+      );
+
+      setShowCorrectGirl(true); // Show a random girl on success
       setTimeout(() => {
         setShowCorrectGirl(false); // Hide after a delay
         setLevel((prev) => prev + 1);
@@ -197,7 +208,12 @@ function App() {
             </button>
           )}
           {status === "Press Start to Play" && (
-            <button onClick={startGame}>Start</button>
+            <button
+              onClick={startGame}
+              className={status === "Press Start to Play" ? "blinking2" : ""}
+            >
+              Start
+            </button>
           )}
         </div>
       </div>
@@ -210,7 +226,7 @@ function App() {
         className={`correct-girl-container ${showCorrectGirl ? "show" : ""}`}
       >
         <img
-          src={animegirl2}
+          src={correctGirlImage} // Use the randomly selected girl image here
           className="correct-girlpng"
           alt="Correct Move Girl"
         />
